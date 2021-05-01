@@ -1,0 +1,63 @@
+@import "_variables.scss";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  color: $second-color;
+  font-family: "Montserrat", sans-serif;
+}
+.app {
+  width: 100%;
+  min-height: 100vh;
+  background-color: $third-color;
+  &__title {
+    font-size: $title-font-size;
+    text-align: center;
+    font-family: "Krona One", sans-serif;
+    padding-top: 35px;
+    width: 100%;
+  }
+  &__upload {
+    border: 2px dashed black;
+    background-color: $base-color;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 90%;
+    min-height: 50%;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+    padding: 50px;
+    border-radius: 5px;
+    font-size: $large-font-size;
+  }
+  &__uploadButton {
+    border-radius: 5px;
+    padding: 10px;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  &__submit {
+    color: $third-color;
+    background-color: $second-color;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 25px;
+    cursor: pointer;
+    font-size: $normal-font-size;
+  }
+  &__uploadFromLink {
+    color: $third-color;
+  }
+  &__imageWrapper {
+    text-align: center;
+  }
+  &__image {
+    width: 50%;
+  }
+}

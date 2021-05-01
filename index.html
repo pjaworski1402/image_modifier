@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image modifier</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Krona+One&family=Montserrat:wght@100;300;400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/style.min.css">
+</head>
+<body>
+    <div class="app">
+        <div class="app__title">Simple image modifier</div>
+        <div class="app__upload">
+            Drag and drop the image,
+            <label for="fileUpload" class="app__uploadButton">click to browse</label>
+            <input id="fileUpload" style="display: none;" type="file" accept="image/*">
+            or paste the link:
+            <input type="text" class="app__uploadFromLink" value="http://www.oyakata.com.pl/media/artykuly/112/gora-fuji-jesien.jpg" placeholder="http://example.com/image.png">
+            <button class="app__submit">I'm ready!</button>
+        </div>
+        <div class="app__imageWrapper">
+        </div>
+    </div>
+</body>
+<script src="script.js"></script>
+</html>
