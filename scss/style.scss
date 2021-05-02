@@ -62,20 +62,29 @@ button {
     text-align: center;
   }
   &__image {
-    width: 50%;
+    max-width: 90vw;
+    max-height: 65vh;
+    object-fit: contain;
     margin: 50px 0;
+    border: 2px solid $base-color;
   }
   &__tools {
-    position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 40%;
+    width: 100%;
+    padding: 0 10%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    background-color: $base-color-opacity;
+    transition: 0.4s background-color;
+    &:hover {
+      background-color: $base-color;
+    }
   }
   &__toolsList {
     list-style: none;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     & li button {
       display: flex;
       flex-direction: column;
@@ -85,7 +94,7 @@ button {
       cursor: pointer;
       img {
         height: 26px;
-        margin-bottom: 10px;
+        margin-bottom: 15px;
       }
     }
   }
