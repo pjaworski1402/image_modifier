@@ -7,6 +7,10 @@
   color: $second-color;
   font-family: "Montserrat", sans-serif;
 }
+button {
+  border: none;
+  background-color: transparent;
+}
 .app {
   width: 100%;
   min-height: 100vh;
@@ -59,5 +63,30 @@
   }
   &__image {
     width: 50%;
+    margin: 50px 0;
+  }
+  &__tools {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40%;
+  }
+  &__toolsList {
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    & li button {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+      cursor: pointer;
+      img {
+        height: 26px;
+        margin-bottom: 10px;
+      }
+    }
   }
 }
