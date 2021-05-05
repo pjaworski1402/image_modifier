@@ -21,13 +21,14 @@
             <button class="app__submit">I'm ready!</button>
         </div>
         <div class="app__imageWrapper">
+            <canvas class="app__canvas"></canvas>
         </div>
         <div class="app__tools" style="display: none;">
-            <ul class="app__toolsList">
-                <li><button><img src="./assets/icons/rotate.svg" alt="rotate">rotate</button></li>
-                <li><button><img src="./assets/icons/flip.svg" alt="flip">flip</button></li>
-                <li><button><img src="./assets/icons/scale.svg" alt="scale">scale</button></li>
-                <li><button><img src="./assets/icons/photo_filter.svg" alt="filters">filters</button></li>
+            <ul class="app__toolList">
+                <li><button class="app__toolButtons" value="rotate"><img src="./assets/icons/rotate.svg" alt="rotate">rotate</button></li>
+                <li><button class="app__toolButtons" value="flip"><img src="./assets/icons/flip.svg" alt="flip">flip</button></li>
+                <li><button class="app__toolButtons" value="scale"><img src="./assets/icons/scale.svg" alt="scale">scale</button></li>
+                <li><button class="app__toolButtons" value="filters"><img src="./assets/icons/photo_filter.svg" alt="filters">filters</button></li>
             </ul>
         </div>
     </div>
