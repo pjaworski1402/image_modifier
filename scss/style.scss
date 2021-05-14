@@ -80,7 +80,7 @@ button {
       background-color: $base-color;
     }
   }
-  &__rotateTitle {
+  &__toolTitle {
     display: flex;
     align-items: center;
     margin-bottom: 20px;
@@ -115,7 +115,7 @@ button {
     font-size: $large-font-size;
     margin: 10px 0;
   }
-  &__rotateTool {
+  &__toolWrapper {
     margin: 0 auto;
     padding: 25px;
     display: flex;

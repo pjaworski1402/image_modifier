@@ -10,7 +10,28 @@ let context = canvas.getContext("2d");
 let img = new Image();
 img.crossOrigin = "anonymous";
 let imageUrl = "";
-let degrees = 0;
+const imageSettings = {
+  degrees: 0,
+  previousDegree: 0,
+  flip: [1, 1],
+  previousFlip: [1, 1],
+  previousValue: (tool) => {
+    tool = tool.toUpperCase();
+    switch (tool) {
+      case "ROTATE":
+        imageSettings.degrees = imageSettings.previousDegree;
+        break;
+      case "FLIP":
+        {
+          imageSettings.flip[0] = imageSettings.previousFlip[0];
+          imageSettings.flip[1] = imageSettings.previousFlip[1];
+        }
+        break;
+      default:
+        break;
+    }
+  },
+};
 
 const testImage = (url, callback) => {
   const timeout = 5000;
@@ -67,8 +88,12 @@ const displayImage = (src) => {
   img.onload = () => {
     canvas.width = img.width;
     canvas.height = img.height;
-    context.translate(canvas.width / 2, canvas.height / 2);
-    context.rotate((degrees * Math.PI) / 180);
+    context.scale(imageSettings.flip[0], imageSettings.flip[1]);
+    context.translate(
+      (canvas.width / 2) * imageSettings.flip[0],
+      (canvas.height / 2) * imageSettings.flip[1]
+    );
+    context.rotate((imageSettings.degrees * Math.PI) / 180);
     context.drawImage(img, -img.width / 2, -img.height / 2);
   };
   imageUrl = src;
@@ -76,44 +101,64 @@ const displayImage = (src) => {
 };
 
 const rotate = (value, input) => {
-  degrees = value;
+  imageSettings.degrees = value;
   input.value = value;
   render();
 };
 
-const rotateTool = () => {
-  const previousDegree = degrees;
-  const toolWrapper = document.createElement("li");
-  const title = document.createElement("span");
-  const inputRange = document.createElement("input");
-  const input = document.createElement("input");
-  const buttonsWrapper = document.createElement("div");
-  const saveButton = document.createElement("button");
-  const cancelButton = document.createElement("button");
-  const range = { max: 359, min: -359 };
-
-  const setInputAttributes = (element, type, className) => {
-    element.min = range.min;
-    element.max = range.max;
-    element.value = degrees;
-    element.type = type;
-    element.classList.add(className);
-  };
-
+const flip = (orientation) => {
+  if (orientation === "horizontal") {
+    imageSettings.flip[0] *= -1;
+  } else if (orientation === "vertical") {
+    imageSettings.flip[1] *= -1;
+  }
+  render();
+};
+const renderTool = (tool, toolName) => {
   const quitFromTool = () => {
     render();
     toolWrapper.remove();
     toggleToolButtons(true);
   };
+  const toolWrapper = document.createElement("li");
+  const title = document.createElement("span");
+  const saveButton = document.createElement("button");
+  const cancelButton = document.createElement("button");
+  const buttonsWrapper = document.createElement("div");
+  buttonsWrapper.classList.add("app__toolButtonsWrapper");
+  saveButton.innerText = "save";
+  cancelButton.innerText = "cancel";
+  title.innerText = toolName;
+  title.classList.add(`app__toolTitle`);
+  toolWrapper.classList.add("app__toolWrapper");
+  saveButton.addEventListener("click", () => quitFromTool());
+  cancelButton.addEventListener("click", () => {
+    imageSettings.previousValue(toolName);
+    quitFromTool();
+  });
+  toolWrapper.appendChild(title);
+  tool(toolWrapper);
+  buttonsWrapper.append(saveButton, cancelButton);
+  toolWrapper.appendChild(buttonsWrapper);
+  toolList.appendChild(toolWrapper);
+};
+
+const rotateTool = (toolWrapper) => {
+  imageSettings.previousDegree = imageSettings.degrees;
+  const inputRange = document.createElement("input");
+  const input = document.createElement("input");
+  const range = { max: 359, min: -359 };
+
+  const setInputAttributes = (element, type, className) => {
+    element.min = range.min;
+    element.max = range.max;
+    element.value = imageSettings.degrees;
+    element.type = type;
+    element.classList.add(className);
+  };
 
   setInputAttributes(inputRange, "range", "app__rotateRange");
   setInputAttributes(input, "number", "app__rotateValue");
-  saveButton.innerText = "save";
-  cancelButton.innerText = "cancel";
-  title.innerText = "Rotate";
-  title.classList.add("app__rotateTitle");
-  toolWrapper.classList.add("app__rotateTool");
-  buttonsWrapper.classList.add("app__toolButtonsWrapper");
   inputRange.addEventListener("change", (e) => rotate(e.target.value, input));
   inputRange.addEventListener("mousemove", (e) =>
     rotate(e.target.value, input)
@@ -122,13 +167,29 @@ const rotateTool = () => {
     rotate(e.target.value, input)
   );
   input.addEventListener("change", (e) => rotate(e.target.value, inputRange));
-  saveButton.addEventListener("click", () => quitFromTool());
-  cancelButton.addEventListener("click", () => {
-    degrees = previousDegree;
-    quitFromTool();
-  });
-  buttonsWrapper.append(saveButton, cancelButton);
-  toolWrapper.append(title, inputRange, input, buttonsWrapper);
+  toolWrapper.append(inputRange, input);
+};
+
+const flipTool = (toolWrapper) => {
+  imageSettings.previousFlip[0] = imageSettings.flip[0];
+  imageSettings.previousFlip[1] = imageSettings.flip[1];
+  const title = document.createElement("span");
+  const flipVertButton = document.createElement("button");
+  const flipHorizButton = document.createElement("button");
+  const flipIcoVert = document.createElement("img");
+  const flipIcoHoriz = document.createElement("img");
+  flipIcoVert.src = "./assets/icons/flip.svg";
+  flipIcoVert.alt = "flip vertically";
+  flipIcoVert.style.transform = "rotate(90deg)";
+  flipIcoVert.style.margin = "auto";
+  flipIcoHoriz.src = "./assets/icons/flip.svg";
+  flipIcoHoriz.alt = "flip horizontally";
+  flipIcoHoriz.style.margin = "auto";
+  flipVertButton.appendChild(flipIcoVert);
+  flipHorizButton.appendChild(flipIcoHoriz);
+  flipVertButton.addEventListener("click", () => flip("vertical"));
+  flipHorizButton.addEventListener("click", () => flip("horizontal"));
+  toolWrapper.append(title, flipVertButton, flipHorizButton);
   toolList.appendChild(toolWrapper);
 };
 
@@ -145,10 +206,14 @@ const openToolPanel = (tool) => {
   switch (tool) {
     case "rotate":
       {
-        rotateTool();
+        renderTool(rotateTool, "Rotate");
       }
       break;
-
+    case "flip":
+      {
+        renderTool(flipTool, "Flip");
+      }
+      break;
     default:
       break;
   }
