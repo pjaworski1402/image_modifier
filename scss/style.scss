@@ -108,7 +108,8 @@ button {
       cursor: pointer;
     }
   }
-  &__rotateValue {
+  &__rotateValue,
+  &__scaleValue {
     background-color: transparent;
     text-align: center;
     border: none;
